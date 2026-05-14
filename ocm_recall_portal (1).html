@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cannabis Recalls — NY Office of Cannabis Management</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --kombu: #354024;
+    --moss: #889063;
+    --tan: #CFBB99;
+    --bone: #E5D7C4;
+    --cafe: #4C3D19;
+    --white: #FFFFFF;
+    --text: #1a1a0e;
+    --muted: #6b6245;
+    --danger: #8B2020;
+    --danger-light: #FDF2F2;
+    --warning: #7A5C1E;
+    --warning-light: #FDF8EE;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F4EDE0;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--kombu);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .logo-leaf {
+    width: 32px; height: 32px;
+    background: var(--moss);
+    clip-path: polygon(50% 0%, 85% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0% 50%, 15% 15%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-text { color: var(--bone); font-size: 14px; font-weight: 600; letter-spacing: 0.02em; }
+  .logo-sub { color: var(--moss); font-size: 11px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { color: var(--tan); font-size: 13px; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-recall { background: var(--tan); color: var(--kombu) !important; padding: 7px 16px; border-radius: 4px; font-weight: 600 !important; }
+
+  /* ── ALERT BANNER ── */
+  .alert-banner {
+    background: var(--danger);
+    color: white;
+    padding: 12px 2rem;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .alert-banner strong { font-weight: 700; }
+  .alert-banner a { color: #ffd0d0; text-decoration: underline; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--kombu);
+    padding: 60px 2rem 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 400px; height: 400px;
+    background: var(--moss);
+    opacity: 0.12;
+    border-radius: 50%;
+  }
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .hero-label {
+    color: var(--moss);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    color: var(--bone);
+    line-height: 1.15;
+    margin-bottom: 18px;
+    max-width: 600px;
+  }
+  .hero p {
+    color: var(--tan);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 560px;
+    margin-bottom: 32px;
+    opacity: 0.9;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    background: var(--tan);
+    color: var(--kombu);
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--bone); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--tan);
+    border: 1.5px solid rgba(207,187,153,0.4);
+    padding: 11px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--tan); color: var(--bone); }
+
+  /* ── MAIN LAYOUT ── */
+  .main-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 2rem 80px; }
+
+  /* ── SEARCH BAR ── */
+  .search-section {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 16px rgba(53,64,36,0.08);
+    border: 1px solid rgba(136,144,99,0.2);
+  }
+  .search-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--cafe);
+    margin-bottom: 18px;
+  }
+  .search-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+  }
+  .search-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .search-field input, .search-field select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #d4c9b0;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: #FAF6EF;
+    color: var(--text);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .search-field input:focus, .search-field select:focus { border-color: var(--moss); }
+  .btn-search {
+    background: var(--kombu);
+    color: var(--bone);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .btn-search:hover { background: var(--cafe); }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .stat-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 20px 22px;
+    border: 1px solid rgba(136,144,99,0.2);
+    box-shadow: 0 1px 8px rgba(53,64,36,0.06);
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--kombu);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num.danger { color: var(--danger); }
+  .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; line-height: 1.4; }
+
+  /* ── ACTIVE RECALL NOTICE ── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--cafe);
+  }
+  .section-count {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ── RECALL CARD ── */
+  .recall-card {
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid rgba(136,144,99,0.2);
+    box-shadow: 0 2px 12px rgba(53,64,36,0.07);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .recall-header {
+    background: var(--danger);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .recall-header-left { display: flex; align-items: center; gap: 14px; }
+  .recall-badge {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .recall-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: white;
+  }
+  .recall-date {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+  }
+
+  /* Consumer action box */
+  .consumer-action {
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    padding: 18px 24px;
+    margin: 20px 24px;
+    border-radius: 0 6px 6px 0;
+  }
+  .consumer-action-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--danger);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .consumer-action p {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #5a1a1a;
+  }
+  .action-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 24px;
+  }
+  .action-step {
+    background: #FAF6EF;
+    border-radius: 7px;
+    padding: 16px;
+    border: 1px solid #e8d9bf;
+    display: flex;
+    gap: 12px;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    background: var(--kombu);
+    color: var(--bone);
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 12.5px; line-height: 1.55; color: var(--cafe); font-weight: 500; }
+
+  /* Recall context */
+  .recall-context {
+    padding: 16px 24px 0;
+  }
+  .recall-context p {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .risk-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--warning-light);
+    color: var(--warning);
+    border: 1px solid #e5c97a;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0 24px 16px;
+  }
+
+  /* Product table */
+  .table-wrap {
+    padding: 0 24px 24px;
+  }
+  .table-toggle {
+    background: none;
+    border: 1.5px solid #d4c9b0;
+    color: var(--cafe);
+    padding: 9px 18px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px;
+    transition: background 0.2s;
+  }
+  .table-toggle:hover { background: #f5ede0; }
+  .table-toggle svg { transition: transform 0.3s; }
+  .table-toggle.open svg { transform: rotate(180deg); }
+
+  .products-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .products-table th {
+    background: #f0e9db;
+    color: var(--cafe);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid #d4c9b0;
+  }
+  .products-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #ede4d5;
+    color: var(--text);
+    line-height: 1.4;
+    vertical-align: top;
+  }
+  .products-table tr:last-child td { border-bottom: none; }
+  .products-table tr:hover td { background: #faf6ef; }
+  .lot-num {
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    background: #f0e9db;
+    padding: 2px 7px;
+    border-radius: 3px;
+    color: var(--cafe);
+    white-space: nowrap;
+  }
+  .product-type {
+    font-size: 11px;
+    background: var(--moss);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .hidden { display: none; }
+
+  /* ── SIDEBAR LAYOUT ── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {}
+  .sidebar-card {
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid rgba(136,144,99,0.2);
+    box-shadow: 0 1px 8px rgba(53,64,36,0.06);
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .sidebar-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--cafe);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ede4d5;
+  }
+  .sidebar-p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--kombu);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 9px 12px;
+    border-radius: 5px;
+    background: #F4EDE0;
+    border: 1px solid #e0d4bd;
+    transition: background 0.2s;
+    margin-bottom: 8px;
+  }
+  .sidebar-link:hover { background: var(--bone); }
+  .poison-card {
+    background: var(--kombu);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+  .poison-card .pc-title { color: var(--bone); font-family: 'DM Serif Display', serif; font-size: 15px; margin-bottom: 8px; }
+  .poison-card .pc-num { color: var(--tan); font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.02em; }
+  .poison-card .pc-sub { color: var(--moss); font-size: 12px; }
+  .notify-card {
+    background: linear-gradient(135deg, #f0ebe0 0%, var(--bone) 100%);
+    border: 1.5px solid var(--tan);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .notify-card .nc-icon { font-size: 24px; margin-bottom: 8px; }
+  .notify-card .nc-title { font-family: 'DM Serif Display', serif; font-size: 15px; color: var(--cafe); margin-bottom: 8px; }
+  .notify-card .nc-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+  .btn-notify {
+    display: block;
+    background: var(--kombu);
+    color: var(--bone);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+    text-align: center;
+  }
+  .btn-notify:hover { background: var(--cafe); }
+
+  /* ── ARCHIVE SECTION ── */
+  .archive-section {
+    margin-top: 40px;
+  }
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .archive-item {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 16px 18px;
+    border: 1px solid rgba(136,144,99,0.2);
+    box-shadow: 0 1px 6px rgba(53,64,36,0.05);
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.1s;
+    text-decoration: none;
+    display: block;
+  }
+  .archive-item:hover { box-shadow: 0 4px 16px rgba(53,64,36,0.12); transform: translateY(-1px); }
+  .archive-date { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .archive-name { font-size: 13.5px; font-weight: 600; color: var(--cafe); line-height: 1.35; margin-bottom: 5px; }
+  .archive-meta { font-size: 11.5px; color: var(--muted); }
+  .archive-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-top: 8px;
+  }
+  .badge-resolved { background: #e8f4e8; color: #2d6a2d; }
+  .badge-active { background: #fde8e8; color: var(--danger); }
+
+  /* ── FADE IN ANIMATION ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner { animation: fadeUp 0.5s ease both; }
+  .search-section { animation: fadeUp 0.5s 0.1s ease both; }
+  .stats-row { animation: fadeUp 0.5s 0.15s ease both; }
+  .recall-card { animation: fadeUp 0.5s 0.2s ease both; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--kombu);
+    color: var(--tan);
+    padding: 40px 2rem 24px;
+    margin-top: 60px;
+  }
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+  .footer-top { display: flex; justify-content: space-between; align-items: start; gap: 40px; margin-bottom: 32px; flex-wrap: wrap; }
+  .footer-brand .fb-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--bone); margin-bottom: 6px; }
+  .footer-brand .fb-sub { font-size: 12px; color: var(--moss); }
+  .footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+  .footer-col h4 { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--bone); margin-bottom: 12px; }
+  .footer-col a { display: block; font-size: 13px; color: var(--tan); text-decoration: none; margin-bottom: 7px; opacity: 0.85; transition: opacity 0.2s; }
+  .footer-col a:hover { opacity: 1; }
+  .footer-bottom { border-top: 1px solid rgba(136,144,99,0.3); padding-top: 18px; font-size: 12px; color: var(--moss); display: flex; justify-content: space-between; align-items: center; }
+
+  @media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .search-row { grid-template-columns: 1fr 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .action-steps { grid-template-columns: 1fr; }
+    .archive-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-leaf"></div>
+      <div>
+        <div class="logo-text">Office of Cannabis Management</div>
+        <div class="logo-sub">New York State</div>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="#">Adult Use</a>
+      <a href="#">Medical</a>
+      <a href="#">Licensing</a>
+      <a href="#">Enforcement</a>
+      <a href="#" class="nav-recall">⚠ Recalls</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <strong>ACTIVE RECALL:</strong> 55 product lots recalled due to unreliable lab testing by Keystone State Testing New York. Issued Feb 26, 2026. &nbsp;<a href="#recall-main">View Details ↓</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Consumer Safety Portal</div>
+    <h1>Cannabis Recall Information</h1>
+    <p>Search active and historical recalls by product name, lot number, or brand. If you purchased a recalled product, stop using it and follow the steps below.</p>
+    <div class="hero-actions">
+      <a href="#search" class="btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search Recalls
+      </a>
+      <a href="#" class="btn-ghost">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Sign Up for Alerts
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- SEARCH -->
+  <div class="search-section" id="search">
+    <div class="search-title">Search All Recalls</div>
+    <div class="search-row">
+      <div class="search-field">
+        <label>Product Name or Brand</label>
+        <input type="text" placeholder="e.g. Blue Dream, Basin Mixtures…">
+      </div>
+      <div class="search-field">
+        <label>Lot Number</label>
+        <input type="text" placeholder="e.g. HH-GC1G-1125-001">
+      </div>
+      <div class="search-field">
+        <label>Date Range</label>
+        <select>
+          <option>All Time</option>
+          <option>Last 30 Days</option>
+          <option>Last 6 Months</option>
+          <option>Last 12 Months</option>
+          <option>2024</option>
+          <option>2023</option>
+        </select>
+      </div>
+      <button class="btn-search">Search</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num danger">55</div>
+      <div class="stat-label">Product lots in active recall</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Active recall notice</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Archived recalls (all time)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Reported adverse events</div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="main-col">
+
+      <!-- ACTIVE RECALL -->
+      <div class="section-header">
+        <div class="section-title">Active Recalls</div>
+        <div class="section-count">1 active recall · Last updated Feb 26, 2026</div>
+      </div>
+
+      <div class="recall-card" id="recall-main">
+        <div class="recall-header">
+          <div class="recall-header-left">
+            <span class="recall-badge">Active</span>
+            <div class="recall-title">Keystone State Testing New York</div>
+          </div>
+          <div class="recall-date">Issued: February 26, 2026</div>
+        </div>
+
+        <!-- Consumer Action Box -->
+        <div class="consumer-action">
+          <div class="consumer-action-title">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            What You Need to Do
+          </div>
+          <p>Check your product's lot number against the list below. If your product is affected, <strong>stop using it immediately</strong> and return it to the dispensary where it was purchased — even if opened.</p>
+        </div>
+
+        <!-- 3-step action -->
+        <div class="action-steps">
+          <div class="action-step">
+            <div class="step-num">1</div>
+            <div class="step-text">Find the lot number on your product packaging</div>
+          </div>
+          <div class="action-step">
+            <div class="step-num">2</div>
+            <div class="step-text">Compare it to the affected lot numbers in the table below</div>
+          </div>
+          <div class="action-step">
+            <div class="step-num">3</div>
+            <div class="step-text">Return to your dispensary for a refund. Call Poison Control if unwell: (800) 222-1222</div>
+          </div>
+        </div>
+
+        <!-- Risk tag -->
+        <div class="risk-tag">
+          ⚠ Risk: Aspergillus mold (55 lots) &nbsp;·&nbsp; Heavy metal cadmium (1 lot)
+        </div>
+
+        <!-- Context text -->
+        <div class="recall-context">
+          <p>Following inspections and a records audit conducted between December 2025 and January 2026, OCM determined that Keystone State Testing New York issued unreliable test results for several adult-use cannabis products. Products tested by this laboratory may not have met required state safety and testing standards.</p>
+          <p><strong>This recall is precautionary.</strong> No adverse health effects have been reported. Investigation is ongoing. Dispensaries and distributors must immediately cease distribution and sales of affected products.</p>
+        </div>
+
+        <!-- Product table -->
+        <div class="table-wrap">
+          <button class="table-toggle" onclick="toggleTable(this)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            View all 55 affected product lots
+          </button>
+          <div class="hidden" id="product-table">
+            <table class="products-table">
+              <thead>
+                <tr>
+                  <th>Licensee</th>
+                  <th>Product</th>
+                  <th>Type</th>
+                  <th>Lot Number</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>AP Cohen / 1Off Manufacturing</td><td>Sativa Blend 5 pack</td><td><span class="product-type">Pre-roll</span></td><td><span class="lot-num">1O-PR5-DYK25</span></td></tr>
+                <tr><td>AP Cohen / 1Off Manufacturing</td><td>Leafiate Sour Jack</td><td><span class="product-type">Flower</span></td><td><span class="lot-num">1O-8F-LF01-JACK</span></td></tr>
+                <tr><td>Basin Mixtures Inc</td><td>HH Green Crack 1g</td><td><span class="product-type">Pre-roll</span></td><td><span class="lot-num">HH-GC1G-1125-001</span></td></tr>
+                <tr><td>Basin Mixtures Inc</td><td>HH Unicorn Piss 1g</td><td><span class="product-type">Pre-roll</span></td><td><span class="lot-num">HH-UP1G-1125-001</span></td></tr>
+                <tr><td>Basin Mixtures Inc</td><td>HH Maui Wowie 1g</td><td><span class="product-type">Pre-roll</span></td><td><span class="lot-num">HH-MW1G-1125-0001</span></td></tr>
+                <tr><td>Basin Mixtures Inc</td><td>HH Grape Gas 3.5g</td><td><span class="product-type">Flower</span></td><td><span class="lot-num">HH-GAF-0825-001</span></td></tr>
+                <tr><td>Basin Mixtures Inc</td><td>HH Trop Fire 3.5g</td><td><span class="product-type">Flower</span></td><td><span class="lot-num">HH-TFF-0825-001</span></td></tr>
+                <tr><td>Basin Mixtures Inc</td><td>HH Sugar Factory 3.5g</td><td><span class="product-type">Flower</span></td><td><span class="lot-num">HH-SFF-0825-001</span></td></tr>
+                <tr><td>Veterans Holdings Inc</td><td>Zkittlez DD</td><td><span class="product-type">Concentrate</span></td><td><span class="lot-num">NYHYDDZKZ03</span></td></tr>
+                <tr><td>Veterans Holdings Inc</td><td>Strawberry Cough DD</td><td><span class="product-type">Concentrate</span></td><td><span class="lot-num">NYHYDDSC02</span></td></tr>
+                <tr><td>Veterans Holdings Inc</td><td>Blueberry Muffin Moonrocks</td><td><span class="product-type">Infused Flower</span></td><td><span class="lot-num">VHMNRKBM07</span></td></tr>
+                <tr><td>Veterans Holdings Inc</td><td>Bosphorous</td><td><span class="product-type">Beverage</span></td><td><span class="lot-num">BEV-KL-BOS2</span></td></tr>
+                <tr><td>Northeast Extracts (NEX)</td><td>Plug & Play Gelatti 1g Vape</td><td><span class="product-type">Concentrate</span></td><td><span class="lot-num">PPGL1-0601</span></td></tr>
+                <tr><td>Northeast Extracts (NEX)</td><td>Delights Marshmallow Milk Chocolate</td><td><span class="product-type">Edible</span></td><td><span class="lot-num">DBMMM-0501</span></td></tr>
+                <tr><td>Nanticoke Hemp Inc</td><td>Blue Dream 0.5g</td><td><span class="product-type">Pre-roll</span></td><td><span class="lot-num">BL100807PR</span></td></tr>
+                <tr><td>Nanticoke Hemp Inc</td><td>Sour Diesel 1g Infused</td><td><span class="product-type">Pre-roll</span></td><td><span class="lot-num">SR1005071GPRD</span></td></tr>
+                <tr><td>VJ Farms / Hudson Valley Jane</td><td>Chem Valley Kush</td><td><span class="product-type">Flower</span></td><td><span class="lot-num">BB-CVK-35-05</span></td></tr>
+                <tr><td>Route 27 Hopyard</td><td>Trop Cookies 7 pack</td><td><span class="product-type">Pre-roll</span></td><td><span class="lot-num">1035 0011 1111 2732</span></td></tr>
+                <tr><td colspan="4" style="text-align:center; color: var(--muted); font-style: italic; font-size:12px; padding: 14px;">+ 37 additional lots — <a href="#" style="color:var(--kombu); font-weight:600;">Download full list (CSV)</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARCHIVE -->
+      <div class="archive-section">
+        <div class="section-header">
+          <div class="section-title">Recall Archive</div>
+          <a href="#" style="font-size:13px; color:var(--kombu); font-weight:600; text-decoration:none;">View all →</a>
+        </div>
+        <div class="archive-grid">
+          <a href="#" class="archive-item">
+            <div class="archive-date">NOV 2025</div>
+            <div class="archive-name">Harmony Gardens — Mold Contamination</div>
+            <div class="archive-meta">3 product lots · Flower</div>
+            <span class="archive-badge badge-resolved">Resolved</span>
+          </a>
+          <a href="#" class="archive-item">
+            <div class="archive-date">AUG 2025</div>
+            <div class="archive-name">Green Path Processing — Labeling Error</div>
+            <div class="archive-meta">7 product lots · Edibles</div>
+            <span class="archive-badge badge-resolved">Resolved</span>
+          </a>
+          <a href="#" class="archive-item">
+            <div class="archive-date">MAY 2025</div>
+            <div class="archive-name">Sunrise Farms — Pesticide Residue</div>
+            <div class="archive-meta">2 product lots · Concentrate</div>
+            <span class="archive-badge badge-resolved">Resolved</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <div class="poison-card">
+        <div class="pc-title">Poison Control Center</div>
+        <div class="pc-num">(800) 222-1222</div>
+        <div class="pc-sub">Call immediately if experiencing serious symptoms after use</div>
+      </div>
+
+      <div class="notify-card">
+        <div class="nc-icon">🔔</div>
+        <div class="nc-title">Get Recall Alerts</div>
+        <div class="nc-sub">Receive email or text notifications when new recalls are issued in New York.</div>
+        <a href="#" class="btn-notify">Sign Up for Alerts</a>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-title">Report an Incident</div>
+        <p class="sidebar-p">Experienced a problem with a cannabis product? Help OCM track safety issues by submitting a report.</p>
+        <a href="#" class="sidebar-link">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Submit Incident Report
+        </a>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-title">For Dispensaries</div>
+        <p class="sidebar-p">Licensed operators must cease sales of recalled products immediately and notify affected customers within 24 hours.</p>
+        <a href="#" class="sidebar-link">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          Licensee Compliance Guide
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.09 1.22a2 2 0 012-2.18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 6.91"/></svg>
+          Contact OCM Compliance
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="fb-name">Office of Cannabis Management</div>
+        <div class="fb-sub">New York State · cannabis.ny.gov</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Consumer</h4>
+          <a href="#">Recalls & Safety</a>
+          <a href="#">Report an Incident</a>
+          <a href="#">Adult Use</a>
+          <a href="#">Medical Cannabis</a>
+        </div>
+        <div class="footer-col">
+          <h4>Industry</h4>
+          <a href="#">Licensing</a>
+          <a href="#">Compliance</a>
+          <a href="#">Lab Testing</a>
+          <a href="#">Enforcement</a>
+        </div>
+        <div class="footer-col">
+          <h4>Agency</h4>
+          <a href="#">About OCM</a>
+          <a href="#">Newsroom</a>
+          <a href="#">Contact</a>
+          <a href="#">Accessibility</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 New York State Office of Cannabis Management</span>
+      <span>Privacy Policy · Disclaimer · Language Access</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleTable(btn) {
+  const table = document.getElementById('product-table');
+  table.classList.toggle('hidden');
+  btn.classList.toggle('open');
+  const label = btn.querySelector('svg').nextSibling;
+  if (table.classList.contains('hidden')) {
+    btn.childNodes[1].textContent = '\nView all 55 affected product lots';
+  } else {
+    btn.childNodes[1].textContent = '\nHide product lot list';
+  }
+}
+
+// Simple search highlight
+document.querySelector('.btn-search').addEventListener('click', function() {
+  const q = document.querySelector('input[placeholder*="Brand"]').value.toLowerCase();
+  if (!q) return;
+  document.getElementById('product-table').classList.remove('hidden');
+  document.querySelector('.table-toggle').classList.add('open');
+  const rows = document.querySelectorAll('.products-table tbody tr');
+  rows.forEach(r => {
+    r.style.background = r.textContent.toLowerCase().includes(q) ? '#fffbe6' : '';
+  });
+});
+</script>
+</body>
+</html>
